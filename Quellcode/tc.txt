@@ -1,0 +1,10 @@
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 4:0:0 u32 divisor 1
+tc filter add dev eth1 parent 1:0 protocol all prio 1 u32 match u8 0x11 0xff at 9 offset at 0 mask 0f00 shift 6 eat link 4:0:0
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 4:0:1 u32 ht 4:0:0 match u16 0x35 0xffff at 2 classid 1:1
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 5:0:0 u32 divisor 1
+tc filter add dev eth1 parent 1:0 protocol all prio 1 u32 match u8 0x6 0xff at 9 match u16 0x0 0xfe00 at 2 offset at 0 mask 0f00 shift 6 eat link 5:0:0
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 5:0:1 u32 ht 5:0:0 match u16 0x50 0xffff at 2 classid 1:1
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 6:0:0 u32 divisor 1
+tc filter add dev eth1 parent 1:0 protocol all prio 1 u32 match u8 0x6 0xff at 9 match u8 0x10 0x10 at 1 offset at 0 mask 0f00 shift 6 eat link 6:0:0
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 6:0:1 u32 ht 6:0:0 match u16 0x16 0xffff at 0 classid 1:2
+tc filter add dev eth1 parent 1:0 protocol all prio 1 handle 7:0:0 u32 divisor 1

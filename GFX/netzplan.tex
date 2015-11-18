@@ -1,0 +1,79 @@
+%\begin{figure}[h!]
+\centering
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+\begin{tikzpicture}[bend angle=30,scale=5,
+%    xscale						= 0.4,
+%	yscale						= 0.4,
+    grow                        = west,
+    punkt/.style={rectangle, rounded corners, shade, top color=white, bottom color=blue!50!black!20, draw=blue!40!black!60},
+    level 1/.style={sibling distance=1cm,level distance=3cm},
+    level 2/.style={sibling distance=4cm, level distance=4cm},
+    descr/.style={rounded corners, shade, top color=white, bottom color=green!50!black!20, draw=green!40!black!60, thick },
+    lan/.style={rectangle, rounded corners, shade, top color=white, bottom color=green!50!black!20, draw=green!40!black!60, thick},
+    wan/.style={rectangle, rounded corners, shade, top color=white, bottom color=red!50!black!20, draw=red!40!black!60, thick},
+    lanconn/.style={thick, draw=green!40!black!60, },
+    wanconn/.style={thick, draw=red!40!black!60, },
+    edge from parent/.style={thick, shorten >=10pt, shorten <=20pt},
+	every edge/.style={thick},
+    font=\footnotesize,
+	%every fit/.style={inner sep=-7pt},
+    pre/.style={thick, shorten >=10pt, shorten <=10pt, loosely dotted, <-, draw},
+    ]
+
+\node[lan] [grow=left] (lan) {LAN};
+
+\node[lan, node distance=3.5cm] (mail) [right of=lan] {mail.office.axxeo.de}
+	edge [lanconn,shorten >=10pt, shorten <=10pt] (lan);
+
+\node[lan,grow=right, node distance=5cm] (firewall) [right of=mail] {firewall.office.axxeo.de}
+	edge [lanconn,shorten >=10pt, shorten <=10pt] (mail)
+		child [grow=south west] {
+			node [wan] (client) {Client}
+				edge [lanconn, shorten >=10pt, shorten <=20pt] (firewall)
+        }
+	    child [grow=north east] {
+	    	node[wan] (r1) {ISP-Router eins}
+				edge [wanconn,shorten >=10pt, shorten <=20pt] node (alte-verbindung) {} (firewall)
+		}
+		child [grow=south east] {
+			node[wan](r2) {ISP-Router zwei}
+				edge [wanconn,shorten >=10pt, shorten <=20pt] node (neue-verbindung) {} (firewall)
+		};
+
+\node[wan,wanconn, shape=cloud,cloud ignores aspect,right of=firewall,node distance=4cm] (internet) {Internet}
+  edge [wanconn,shorten >=10pt, shorten <=10pt] (r1)
+  edge [wanconn,shorten >=10pt, shorten <=10pt] (r2);
+
+%\node [right of=r2, node distance=4cm] (beschr-neu) {neue Verbindung}
+%  edge [pre, bend right] (neue-verbindung);
+\node [right of=r1, node distance=4cm] (beschr-alt) {alte Verbindung}
+  edge [pre, bend left] (alte-verbindung);
+%
+%
+\begin{pgfonlayer}{background}
+%  \node [rectangle, rounded corners, shade, top color=white, bottom color=blue!30!black!20,fit=(beschr-neu) ,] {};
+  \node [rectangle, rounded corners, shade, bottom color=white, top color=blue!30!black!20,fit=(beschr-alt) ,] {};
+  %\node [fill=gray!20,fit=(firewall) (r1) (internet), inner sep=-1mm,label={above:alte Verbindung}] {};
+  %\node [fill=gray!50,fit=(firewall) (r2), inner sep=-9mm,label={below:neue Verbindung},circle] {};
+\end{pgfonlayer}
+%
+\end{tikzpicture}
+%\vspace{cm}
+%\begin{itemize}
+%    \item[] \begin{scriptsize}LAN-Verbindung / vertrauenswürdiger Host\end{scriptsize}
+%        \tikz {\path[very thick, draw=green!40!black!60,draw] (0,0) -- (4,0){};}
+%
+%    \item[] \begin{scriptsize}WAN-Verbindung / nicht vertrauenswürdiger Host\end{scriptsize}
+%        \tikz {\path[very thick, draw=red!40!black!60,draw] (0,0) -- (4,0) {};}
+%\end{itemize}
+
+%    lan/.style={rectangle, rounded corners, shade, top color=white, bottom color=green!50!black!20, draw=green!40!black!60, thick},
+%    wan/.style={rectangle, rounded corners, shade, top color=white, bottom color=red!50!black!20, draw=red!40!black!60, thick},
+%    lanconn/.style={thick, draw=green!40!black!60, },
+%    wanconn/.style={thick, draw=red!40!black!60, },
+%\caption{Netzplan}
+%\label{fig:netzplan}
+%
+%\end{figure}
